@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1761031226 source:c:\users\navor\onedrive\documents\github\logisticmanagementsystem1\assignmentc1\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
