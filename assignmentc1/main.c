@@ -9,8 +9,7 @@ void displayCities(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
 void renameCity(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
 void removeCity(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
 void storeInterCityDistance(float cityDistance[MAX_CITIES][MAX_CITIES],int count);
-
-
+void displayInterCityDistance(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cityDistance[MAX_CITIES][MAX_CITIES],int count);
 
 int main()
 {
@@ -48,6 +47,7 @@ int main()
             break;
         case 3:
             storeInterCityDistance(cityDistance,count);
+            displayInterCityDistance(cities,cityDistance,count);
             break;
         case 4:
             break;
@@ -173,6 +173,19 @@ void storeInterCityDistance(float cityDistance[MAX_CITIES][MAX_CITIES],int count
             }
 
         }
+    }
+}
+void displayInterCityDistance( char cities[MAX_CITIES][MAX_NAME_LENGTH],float cityDistance[MAX_CITIES][MAX_CITIES],int count)
+{
+    int i,j;
+    printf("         InterCity Distance Matrix     \n");
+    for(i=0; i<count; i++)
+    {
+        for(j=0; j<count; j++)
+        {
+            printf("%.2f  ",cityDistance[i][j]);
+        }
+        printf("\n");
     }
 }
 
