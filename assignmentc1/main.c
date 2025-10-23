@@ -7,6 +7,7 @@
 void storeCities(char cities[MAX_CITIES][MAX_NAME_LENGTH], int *count);//count means there is city count already we have
 void displayCities(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
 void renameCity(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
+void removeCity(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
 
 int main()
 {
@@ -34,6 +35,7 @@ do
             break;
         case 2:
             renameCity(cities,count);
+            removeCity(cities,count);
             break;
         case 3:
 
@@ -112,5 +114,28 @@ void renameCity(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count)
 
 
     displayCities(cities,count);
+}
+void removeCity(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count)
+{
+
+    int cityIndex;
+
+    if(count == 0)
+    {
+        printf("No Cities Available for Remove\n");
+        return ;
+
+    }
+
+    displayCities(cities,count);
+
+    printf("Enter City Index do you want to Remove:");
+    scanf("%d",&cityIndex);
+    getchar();
+
+    strcpy(cities[cityIndex - 1]," ");
+
+    displayCities(cities,count);
+
 }
 
