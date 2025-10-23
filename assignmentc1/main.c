@@ -8,14 +8,18 @@ void storeCities(char cities[MAX_CITIES][MAX_NAME_LENGTH], int *count);//count m
 void displayCities(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
 void renameCity(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
 void removeCity(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
+void storeInterCityDistance(float cityDistance[MAX_CITIES][MAX_CITIES],int count);
+
+
 
 int main()
 {
     int choice;
     char cities[MAX_CITIES][MAX_NAME_LENGTH];
     int count = 0;
+    float cityDistance[MAX_CITIES][MAX_CITIES];
 
-do
+    do
     {
         printf("1.Add new City\n");
         printf("2.Rename or Remove City\n");
@@ -38,7 +42,7 @@ do
             removeCity(cities,count);
             break;
         case 3:
-
+            storeInterCityDistance(cityDistance,count);
             break;
         case 4:
             break;
@@ -53,7 +57,7 @@ do
         }
     }
     while(choice != 6);
-return 0;
+    return 0;
 }
 void storeCities(char cities[MAX_CITIES][MAX_NAME_LENGTH], int *count)
 {
@@ -137,5 +141,33 @@ void removeCity(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count)
 
     displayCities(cities,count);
 
+}
+void storeInterCityDistance(float cityDistance[MAX_CITIES][MAX_CITIES],int count)
+{
+    int i,j;
+    if(count < 2)
+    {
+        printf("No enough cities available Please add cities first!");
+        return;
+    }
+    printf("\n      Enter Intercity Distances     \n");
+
+    for(i=0; i<count; i++)
+    {
+        for(j=0; j<count; j++)
+        {
+            if(i==j)
+            {
+                cityDistance[i][j] = 0;
+            }
+            else if (i<j)
+            {
+                printf("Enter city %d to city %d distance:",i+1,j+1);
+                scanf("%f",&cityDistance[i][j]);
+                cityDistance[j][i] = cityDistance[i][j];
+            }
+
+        }
+    }
 }
 
