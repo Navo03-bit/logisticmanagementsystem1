@@ -18,6 +18,11 @@ int main()
     char cities[MAX_CITIES][MAX_NAME_LENGTH];
     int count = 0;
     float cityDistance[MAX_CITIES][MAX_CITIES];
+    char vehicles[3][10] = {"Van","Truck","Lorry"};
+    float vehicleCapacity[3] = {1000,5000,10000};
+    float vehicleRatePerKm[3] = {30.0,40.0,80.0};
+    float vehicleAvgSpeed[3] = {60.0,50.0,45.0};
+    float vehicleFuelEfficiency[3] = {12.0,6.0,4.0};
 
     do
     {
