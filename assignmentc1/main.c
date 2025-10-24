@@ -3,6 +3,8 @@
 #include <string.h>
 #define MAX_CITIES 30
 #define MAX_NAME_LENGTH 50
+#define VEHICLE_TYPES 3
+#define VEHICLE_NAME_LENGTH 10
 
 void storeCities(char cities[MAX_CITIES][MAX_NAME_LENGTH], int *count);//count means there is city count already we have
 void displayCities(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
