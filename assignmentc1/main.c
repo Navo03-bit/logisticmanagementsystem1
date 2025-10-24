@@ -14,6 +14,8 @@ void storeInterCityDistance(float cityDistance[MAX_CITIES][MAX_CITIES],int count
 void displayInterCityDistance(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cityDistance[MAX_CITIES][MAX_CITIES],int count);
 void editIntercityDistances(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cityDistance[MAX_CITIES][MAX_CITIES],int count);
 void showVehicleList(char vehicles[3][10],float vehicleCapacity[3],float vehicleRatePerKm[3],float vehicleAvgSpeed[3],float vehicleFuelEfficiency[3]);
+void deliveryRequestHandling(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count,float cityDistance[MAX_CITIES][MAX_CITIES],char vehicles[3][10], float vehicleCapacity[3],float vehicleRatePerKm[3],float vehicleAvgSpeed[3],float vehicleFuelEfficiency[3]);
+void showAllDeliveries(char cities[MAX_CITIES][MAX_NAME_LENGTH],char vehicles[3][10]);
 
 int main()
 {
@@ -26,6 +28,7 @@ int main()
     float vehicleRatePerKm[3] = {30.0,40.0,80.0};
     float vehicleAvgSpeed[3] = {60.0,50.0,45.0};
     float vehicleFuelEfficiency[3] = {12.0,6.0,4.0};
+    float deliveryCost,deliveryTime,fuelConsumption,fuelCost,operationalCost,profit,finalChargeToCustomer;
 
     do
     {
@@ -34,7 +37,7 @@ int main()
         printf("3.Store Intercity Distance\n");
         printf("4.Edit distances from Two Cities\n");
         printf("5.Show Vehicle List\n");
-        printf("6..Make Dilivery Request\n");
+        printf("6..Make Delivery Request\n");
         printf("7.Exit\n");
         printf("Enter your Choice:");
         scanf("%d",&choice);
@@ -61,6 +64,9 @@ int main()
         case 5:
              showVehicleList(vehicles,vehicleCapacity,vehicleRatePerKm,vehicleAvgSpeed,vehicleFuelEfficiency);
              break;
+        case 6:
+            deliveryRequestHandling(cities,count,cityDistance,vehicles,vehicleCapacity,vehicleRatePerKm,vehicleAvgSpeed,vehicleFuelEfficiency);
+            break;
         default:
             printf("Invalid choice\n");
 
@@ -235,4 +241,45 @@ void showVehicleList(char vehicles[3][10],float vehicleCapacity[3],float vehicle
 
     }
 }
+void deliveryRequestHandling(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count,float cityDistance[MAX_CITIES][MAX_CITIES],char vehicles[3][10], float vehicleCapacity[3],float vehicleRatePerKm[3],float vehicleAvgSpeed[3],float vehicleFuelEfficiency[3])
+{
+    int sourceIdx,destIdx,vehicleType;
+    float weight,distance;
+    if(count < 2)
+    {
+        printf("No Enough Cities Available for Dilivery!\n");
+        return;
+    }
 
+    printf("Enter Source City Index:");
+    scanf("%d",&sourceIdx);
+
+    printf("Enter Destination City Index:");
+    scanf("%d",&destIdx);
+
+    if(sourceIdx == destIdx)
+    {
+        printf("Invalid Index !\n");
+        return ;
+    }
+    displayInterCityDistance(cities,cityDistance,count);
+    distance = cityDistance[sourceIdx-1][destIdx-1];
+
+    printf("Enter Vehicle Type(van=0,truck=1,lorry=2):");
+    scanf("%d",&vehicleType);
+
+    if(vehicleType<0 || vehicleType>2)
+    {
+        printf("Invalid Vehicle Type!\n");
+        return;
+    }
+
+    printf("Enter weight in kg:");
+    scanf("%f",&weight);
+
+    if(weight > vehicleCapacity[vehicleType])
+    {
+        printf("Invalid Weight!");
+        return ;
+    }
+}
