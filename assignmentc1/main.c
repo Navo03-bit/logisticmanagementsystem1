@@ -11,6 +11,7 @@ void removeCity(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
 void storeInterCityDistance(float cityDistance[MAX_CITIES][MAX_CITIES],int count);
 void displayInterCityDistance(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cityDistance[MAX_CITIES][MAX_CITIES],int count);
 void editIntercityDistances(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cityDistance[MAX_CITIES][MAX_CITIES],int count);
+void showVehicleList(char vehicles[3][10],float vehicleCapacity[3],float vehicleRatePerKm[3],float vehicleAvgSpeed[3],float vehicleFuelEfficiency[3]);
 
 int main()
 {
@@ -55,8 +56,8 @@ int main()
             displayInterCityDistance(cities,cityDistance,count)
             break;
         case 5:
-
-            break;
+             showVehicleList(vehicles,vehicleCapacity,vehicleRatePerKm,vehicleAvgSpeed,vehicleFuelEfficiency);
+             break;
         default:
             printf("Invalid choice\n");
 
@@ -218,5 +219,17 @@ void editIntercityDistances(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cityD
     scanf("%f",&newDistance);
 
     cityDistance[city1Index-1][city2Index-1] = cityDistance[city2Index-1][city1Index-1]=newDistance;
+}
+void showVehicleList(char vehicles[3][10],float vehicleCapacity[3],float vehicleRatePerKm[3],float vehicleAvgSpeed[3],float vehicleFuelEfficiency[3])
+{
+    int i;
+    printf("\n     Vehicle Management list     \n");
+    printf("Type\tCapacity\tRate Per km(LKR)\tAvg Speed(km/h)\tFuel Efficiency(km/l)  \n");
+    for(i=0; i<VEHICLE_TYPES; i++)
+    {
+        printf("%s  \t%f  \t%f \t%f    \t%f  ",vehicles[i],vehicleCapacity[i], vehicleRatePerKm[i],vehicleAvgSpeed[i],vehicleFuelEfficiency[i]);
+        printf("\n");
+
+    }
 }
 
