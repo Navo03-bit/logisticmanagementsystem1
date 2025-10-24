@@ -10,6 +10,7 @@ void renameCity(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
 void removeCity(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
 void storeInterCityDistance(float cityDistance[MAX_CITIES][MAX_CITIES],int count);
 void displayInterCityDistance(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cityDistance[MAX_CITIES][MAX_CITIES],int count);
+void editIntercityDistances(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cityDistance[MAX_CITIES][MAX_CITIES],int count);
 
 int main()
 {
@@ -50,6 +51,8 @@ int main()
             displayInterCityDistance(cities,cityDistance,count);
             break;
         case 4:
+            editIntercityDistances(cities,cityDistance,count);
+            displayInterCityDistance(cities,cityDistance,count)
             break;
         case 5:
 
@@ -187,5 +190,33 @@ void displayInterCityDistance( char cities[MAX_CITIES][MAX_NAME_LENGTH],float ci
         }
         printf("\n");
     }
+}
+void editIntercityDistances(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cityDistance[MAX_CITIES][MAX_CITIES],int count)
+{
+    int i,city1Index,city2Index;
+    float newDistance;
+    if(count < 2)
+    {
+        printf("No Enough Cities Available for Edit Distances!\n");
+        return;
+    }
+    printf("Enter City1 Index:");
+    scanf("%d",&city1Index);
+    printf("Enter City2 Index:");
+    scanf("%d",&city2Index);
+
+    displayCities(cities,count);
+
+    if(city1Index < 1 || city1Index > count || city2Index <1 || city2Index > count)
+    {
+        printf("Invalid city Index!\n");
+        return;
+    }
+    printf("Current distance between %s and %s:%.2f km]\n",cities[city1Index-1],cities[city2Index-1],cityDistance[city1Index-1][city2Index-1]);
+
+    printf("Enter New Distance:");
+    scanf("%f",&newDistance);
+
+    cityDistance[city1Index-1][city2Index-1] = cityDistance[city2Index-1][city1Index-1]=newDistance;
 }
 
