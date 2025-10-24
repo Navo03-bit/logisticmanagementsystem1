@@ -32,7 +32,8 @@ int main()
         printf("3.Store Intercity Distance\n");
         printf("4.Edit distances from Two Cities\n");
         printf("5.Show Vehicle List\n");
-        printf("6.Exit\n");
+        printf("6..Make Dilivery Request\n");
+        printf("7.Exit\n");
         printf("Enter your Choice:");
         scanf("%d",&choice);
 
@@ -65,7 +66,7 @@ int main()
 
         }
     }
-    while(choice != 6);
+    while(choice != 7);
     return 0;
 }
 void storeCities(char cities[MAX_CITIES][MAX_NAME_LENGTH], int *count)
