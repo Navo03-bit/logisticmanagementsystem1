@@ -5,6 +5,7 @@
 #define MAX_NAME_LENGTH 50
 #define VEHICLE_TYPES 3
 #define VEHICLE_NAME_LENGTH 10
+#define FUEL_PRICE 310
 
 void storeCities(char cities[MAX_CITIES][MAX_NAME_LENGTH], int *count);//count means there is city count already we have
 void displayCities(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
@@ -15,7 +16,7 @@ void displayInterCityDistance(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cit
 void editIntercityDistances(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cityDistance[MAX_CITIES][MAX_CITIES],int count);
 void showVehicleList(char vehicles[3][10],float vehicleCapacity[3],float vehicleRatePerKm[3],float vehicleAvgSpeed[3],float vehicleFuelEfficiency[3]);
 void deliveryRequestHandling(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count,float cityDistance[MAX_CITIES][MAX_CITIES],char vehicles[3][10], float vehicleCapacity[3],float vehicleRatePerKm[3],float vehicleAvgSpeed[3],float vehicleFuelEfficiency[3]);
-void showAllDeliveries(char cities[MAX_CITIES][MAX_NAME_LENGTH],char vehicles[3][10]);
+
 
 int main()
 {
@@ -282,4 +283,24 @@ void deliveryRequestHandling(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count,
         printf("Invalid Weight!");
         return ;
     }
+    float calcDeliveryCost = distance*vehicleRatePerKm[vehicleType]*(1.0+weight/1000);
+    printf("%.2f\n",calcDeliveryCost);
+
+    float calcDeliveryTime = distance/vehicleAvgSpeed[vehicleType];
+    printf("%.2f\n",calcDeliveryTime);
+
+    float fuelConsumption = distance/vehicleFuelEfficiency[vehicleType];
+    printf("%.2f\n",fuelConsumption);
+
+    float fuelCost = fuelConsumption*FUEL_PRICE;
+    printf("%.2f\n",fuelCost);
+
+    float operationalCost = calcDeliveryCost+fuelCost;
+    printf("%.2f\n",operationalCost);
+
+    float profit = calcDeliveryCost*0.25;
+    printf("%.2f\n",profit);
+
+    float finalChargeToCustomer = operationalCost+profit;
+    printf("%.2f\n",finalChargeToCustomer);
 }
