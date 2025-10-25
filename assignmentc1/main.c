@@ -303,4 +303,15 @@ void deliveryRequestHandling(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count,
 
     float finalChargeToCustomer = operationalCost+profit;
     printf("%.2f\n",finalChargeToCustomer);
+
+     //Delivery Details
+    deliverySource[deliveryCount]=sourceIdx-1;
+    deliveryDestination[deliveryCount]=destIdx-1;
+    deliveryVehicle[deliveryCount]=vehicleType;
+    deliveryWeight[deliveryCount]=weight;
+    deliveryCost[deliveryCount]=calcDeliveryCost;
+    deliveryTime[deliveryCount]=calcDeliveryTime;
+    deliveryFuelCost[deliveryCount]=fuelCost;
+    deliveryFinalCharge[deliveryCount]=finalChargeToCustomer;
+    deliveryCount++;
 }
