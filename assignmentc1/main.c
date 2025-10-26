@@ -16,6 +16,7 @@ void displayInterCityDistance(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cit
 void editIntercityDistances(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cityDistance[MAX_CITIES][MAX_CITIES],int count);
 void showVehicleList(char vehicles[3][10],float vehicleCapacity[3],float vehicleRatePerKm[3],float vehicleAvgSpeed[3],float vehicleFuelEfficiency[3]);
 void deliveryRequestHandling(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count,float cityDistance[MAX_CITIES][MAX_CITIES],char vehicles[3][10], float vehicleCapacity[3],float vehicleRatePerKm[3],float vehicleAvgSpeed[3],float vehicleFuelEfficiency[3]);
+void showAllDeliveries(char cities[MAX_CITIES][MAX_NAME_LENGTH],char vehicles[3][10]);
 
 
 int main()
@@ -70,6 +71,7 @@ int main()
             deliveryRequestHandling(cities,count,cityDistance,vehicles,vehicleCapacity,vehicleRatePerKm,vehicleAvgSpeed,vehicleFuelEfficiency);
             break;
         case 7:
+            showAllDeliveries(cities,vehicles);
             break;
         default:
             printf("Invalid choice\n");
@@ -317,4 +319,25 @@ void deliveryRequestHandling(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count,
     deliveryFuelCost[deliveryCount]=fuelCost;
     deliveryFinalCharge[deliveryCount]=finalChargeToCustomer;
     deliveryCount++;
+}
+void showAllDeliveries(char cities[MAX_CITIES][MAX_NAME_LENGTH],char vehicles[3][10])
+{
+    int i;
+    if(deliveryCount==0)
+    {
+        printf("No deliveries added\n");
+        return;
+    }
+    printf("\n    Delivery Records     \n");
+    for(i=0; i<deliveryCount; i++)
+    {
+        printf("\nDelivery %d\n",i+1);
+        printf("From:%s\n", cities[deliverySource[i]]);
+        printf("To:%s\n",cities[deliveryDestination[i]]);
+        printf("Vehicle:%s\n",vehicles[deliveryVehicle[i]]);
+        printf("Weight:%.2f\n",deliveryWeight[i]);
+        printf("Cost:%.2f\n", deliveryCost[i]);
+        printf("Fuel Cost:%.2f\n",deliveryFuelCost[i]);
+        printf("Final Charge:%.2f\n",deliveryFinalCharge[i]);
+    }
 }
