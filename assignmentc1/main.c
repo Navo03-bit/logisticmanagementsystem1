@@ -6,6 +6,7 @@
 #define VEHICLE_TYPES 3
 #define VEHICLE_NAME_LENGTH 10
 #define FUEL_PRICE 310
+#define INF_DISTANCE 1e9f
 
 void storeCities(char cities[MAX_CITIES][MAX_NAME_LENGTH], int *count);//count means there is city count already we have
 void displayCities(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count);
@@ -17,11 +18,12 @@ void editIntercityDistances(char cities[MAX_CITIES][MAX_NAME_LENGTH],float cityD
 void showVehicleList(char vehicles[3][10],float vehicleCapacity[3],float vehicleRatePerKm[3],float vehicleAvgSpeed[3],float vehicleFuelEfficiency[3]);
 void deliveryRequestHandling(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count,float cityDistance[MAX_CITIES][MAX_CITIES],char vehicles[3][10], float vehicleCapacity[3],float vehicleRatePerKm[3],float vehicleAvgSpeed[3],float vehicleFuelEfficiency[3]);
 void showAllDeliveries(char cities[MAX_CITIES][MAX_NAME_LENGTH],char vehicles[3][10]);
-
+void showReports(void);
+float findMinDistanceRoute(int srcIdx, int destIdx, int count, float cityDistance[MAX_CITIES][MAX_CITIES], int path[MAX_CITIES], int *pathLen);
 
 int main()
 {
-    int choice;
+    int choice,i,j;
     char cities[MAX_CITIES][MAX_NAME_LENGTH];
     int count = 0;
     float cityDistance[MAX_CITIES][MAX_CITIES];
@@ -31,6 +33,18 @@ int main()
     float vehicleAvgSpeed[3] = {60.0,50.0,45.0};
     float vehicleFuelEfficiency[3] = {12.0,6.0,4.0};
     float deliveryCost,deliveryTime,fuelConsumption,fuelCost,operationalCost,profit,finalChargeToCustomer;
+    float deliveryDistance[MAX_DELIVERY];
+    float deliveryProfit[MAX_DELIVERY];
+    for(i = 0; i < MAX_CITIES; i++)
+    {
+        for( j = 0; j < MAX_CITIES; j++)
+        {
+            if(i == j) cityDistance[i][j] = 0.0f;
+            else cityDistance[i][j] = INF_DISTANCE;
+        }
+    }
+
+
 
     do
     {
@@ -40,8 +54,9 @@ int main()
         printf("4.Edit distances from Two Cities\n");
         printf("5.Show Vehicle List\n");
         printf("6..Make Delivery Request\n");
-         printf("7.Show All Deliveries\n");
-        printf("8.Exit\n");
+        printf("7.Show All Deliveries\n");
+        printf("8.Show Reports\n");
+        printf("9.Exit\n");
         printf("Enter your Choice:");
         scanf("%d",&choice);
 
@@ -65,13 +80,16 @@ int main()
             displayInterCityDistance(cities,cityDistance,count)
             break;
         case 5:
-             showVehicleList(vehicles,vehicleCapacity,vehicleRatePerKm,vehicleAvgSpeed,vehicleFuelEfficiency);
-             break;
+            showVehicleList(vehicles,vehicleCapacity,vehicleRatePerKm,vehicleAvgSpeed,vehicleFuelEfficiency);
+            break;
         case 6:
             deliveryRequestHandling(cities,count,cityDistance,vehicles,vehicleCapacity,vehicleRatePerKm,vehicleAvgSpeed,vehicleFuelEfficiency);
             break;
         case 7:
             showAllDeliveries(cities,vehicles);
+            break;
+        case 8:
+            showReports();
             break;
         default:
             printf("Invalid choice\n");
@@ -80,7 +98,7 @@ int main()
 
         }
     }
-    while(choice != 8);
+    while(choice != 9);
     return 0;
 }
 void storeCities(char cities[MAX_CITIES][MAX_NAME_LENGTH], int *count)
@@ -309,7 +327,7 @@ void deliveryRequestHandling(char cities[MAX_CITIES][MAX_NAME_LENGTH],int count,
     float finalChargeToCustomer = operationalCost+profit;
     printf("%.2f\n",finalChargeToCustomer);
 
-     //Delivery Details
+    //Delivery Details
     deliverySource[deliveryCount]=sourceIdx-1;
     deliveryDestination[deliveryCount]=destIdx-1;
     deliveryVehicle[deliveryCount]=vehicleType;
@@ -341,3 +359,105 @@ void showAllDeliveries(char cities[MAX_CITIES][MAX_NAME_LENGTH],char vehicles[3]
         printf("Final Charge:%.2f\n",deliveryFinalCharge[i]);
     }
 }
+void showReports(void)
+{
+    int i;
+    if(deliveryCount == 0)
+    {
+        printf("No deliveries completed yet\n");
+        return;
+    }
+    float sumDistance = 0.0f;
+    float sumTime     = 0.0f;
+    float sumRevenue  = 0.0f;
+    float sumProfit   = 0.0f;
+    float minDistance = deliveryDistance[0];
+    float maxDistance = deliveryDistance[0];
+
+    for(i = 0; i < deliveryCount; i++)
+    {
+        sumDistance += deliveryDistance[i];
+        sumTime     += deliveryTime[i];
+        sumRevenue  += deliveryFinalCharge[i];
+        sumProfit   += deliveryProfit[i];
+
+        if(deliveryDistance[i] < minDistance) minDistance = deliveryDistance[i];
+        if(deliveryDistance[i] > maxDistance) maxDistance = deliveryDistance[i];
+    }
+
+    printf("\n   PERFORMANCE REPORTS   \n");
+    printf("Total Deliveries Completed: %d\n", deliveryCount);
+    printf("Total Distance Covered: %.2f km\n", sumDistance);
+    printf("Average Delivery Time: %.2f hours\n", sumTime / deliveryCount);
+    printf("Total Revenue: %.2f LKR\n", sumRevenue);
+    printf("Total Profit: %.2f LKR\n", sumProfit);
+    printf("Shortest Route Completed: %.2f km\n", minDistance);
+    printf("Longest Route Completed:  %.2f km\n", maxDistance);
+}
+
+float findMinDistanceRoute(int sourceIdx, int destIdx, int count, float cityDistance[MAX_CITIES][MAX_CITIES], int path[MAX_CITIES], int *pathLen)
+{
+    int i,k,v;
+    int visited[MAX_CITIES] = {0};
+    float distArr[MAX_CITIES];
+    int prev[MAX_CITIES];
+
+    for(i = 0; i < count; i++)
+    {
+        distArr[i] = INF_DISTANCE;
+        prev[i]    = -1;
+    }
+    distArr[sourceIdx] = 0.0f;
+
+    for(k = 0; k < count; k++)
+    {
+        float minVal = INF_DISTANCE;
+        int u      = -1;
+        for(i = 0; i < count; i++)
+        {
+            if(!visited[i] && distArr[i] < minVal)
+            {
+                minVal = distArr[i];
+                u      = i;
+            }
+        }
+        if(u == -1) break;
+        visited[u] = 1;
+
+        for(v = 0; v < count; v++)
+        {
+            if(!visited[v] && cityDistance[u][v] < INF_DISTANCE/2)
+            {
+                float alt = distArr[u] + cityDistance[u][v];
+                if(alt < distArr[v])
+                {
+                    distArr[v] = alt;
+                    prev[v]    = u;
+                }
+            }
+        }
+    }
+
+    if(distArr[destIdx] >= INF_DISTANCE/2)
+    {
+        *pathLen = 0;
+        return INF_DISTANCE;
+    }
+
+    int tempPath[MAX_CITIES];
+    int idx = 0;
+    for(v = destIdx; v != -1; v = prev[v])
+    {
+        tempPath[idx++] = v;
+    }
+    *pathLen = idx;
+    for (i = 0; i < idx; i++)
+    {
+        path[i] = tempPath[idx - 1 - i];
+    }
+
+    return distArr[destIdx];
+}
+
+
+
