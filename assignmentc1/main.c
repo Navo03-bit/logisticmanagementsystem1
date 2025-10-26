@@ -39,7 +39,8 @@ int main()
         printf("4.Edit distances from Two Cities\n");
         printf("5.Show Vehicle List\n");
         printf("6..Make Delivery Request\n");
-        printf("7.Exit\n");
+         printf("7.Show All Deliveries\n");
+        printf("8.Exit\n");
         printf("Enter your Choice:");
         scanf("%d",&choice);
 
@@ -68,6 +69,8 @@ int main()
         case 6:
             deliveryRequestHandling(cities,count,cityDistance,vehicles,vehicleCapacity,vehicleRatePerKm,vehicleAvgSpeed,vehicleFuelEfficiency);
             break;
+        case 7:
+            break;
         default:
             printf("Invalid choice\n");
 
@@ -75,7 +78,7 @@ int main()
 
         }
     }
-    while(choice != 7);
+    while(choice != 8);
     return 0;
 }
 void storeCities(char cities[MAX_CITIES][MAX_NAME_LENGTH], int *count)
